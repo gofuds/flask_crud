@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -37,6 +37,13 @@ def post_create():
 def post_read(id):
     post = Post.query.get(id)
     return render_template('read.html',post= post)
+    
+@app.route('/posts/<int:id>/delete')
+def post_delete(id):
+    post = Post.query.get(id)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect('/')
     
 if __name__ == '__main__':
     app.run(host = '0.0.0.0', port = '8080', debug=True)
